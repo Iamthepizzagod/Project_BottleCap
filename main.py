@@ -1,7 +1,17 @@
-import sys
+#! /usr/bin/env python3
 
-from scapy.all import sr1, ICMP
+from scapy.all import *
+from scapy.layers.inet import IP, ICMP
 
-p=sr1(IP(dst=sys.argv[1])/ICMP())
-if p:
-    p.show()
+i = 0;
+packets = sniff(count=10)
+
+for packet in packets:
+    if packet.haslayer(IP):
+        IPDst = packets[i][IP].dst;
+        print("IP Destination is: " + IPDst + '\n ')
+        i += 1
+
+
+
+
