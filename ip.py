@@ -39,8 +39,13 @@ def save_object(object): #saves a static object of any kind as a .obj
     filename = input()
     filename = str(filename) + ".obj"
     print("file name will be: " + filename)
-    file_packets = open(filename, 'wb')
-    pickle.dump(object, file_packets)
+    try:
+        file_packets = open(filename, 'wb')
+        pickle.dump(object, file_packets)
+    except:
+        print("File saving failed.")
+    else:
+        print(filename + " saved successfully!")
 
 def pcapImport(pcapName):
     option = "0"
@@ -58,7 +63,7 @@ def pcapImport(pcapName):
             option = input()
             if option == "y":
                 save_object(packets)
-        packets.summary()
+        #packets.summary()
 
     return packets
 
