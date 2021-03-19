@@ -47,7 +47,7 @@ def pcapImport(pcapName):
     # todo: add logic to make sure file + file name is a valid .pcap
 
     packets = sniff(offline=pcapName)
-    packets[30].show() #debug line, dosent seem to work on different indicies...
+    #packets[0].show() #debug line, dosent seem to work on different indicies...
 
     while option != "n" and option != "y":
         print("Would you like to save the pcap output to a pickle file?(y/n) ")
@@ -55,4 +55,12 @@ def pcapImport(pcapName):
         if option == "y":
             save_object(packets)
 
+    packets.summary()
     return packets
+
+
+def outputPktSummary(packets):
+    y = 0;
+    for i in packets:
+        i.summary()
+        y+=1
