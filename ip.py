@@ -44,18 +44,22 @@ def save_object(object): #saves a static object of any kind as a .obj
 
 def pcapImport(pcapName):
     option = "0"
-    # todo: add logic to make sure file + file name is a valid .pcap
+    packets = None
 
-    packets = sniff(offline=pcapName)
-    #packets[0].show() #debug line, dosent seem to work on different indicies...
+    try:
+        packets = sniff(offline=pcapName)
+    except:
+        print("File not valid.")
+    #packets[0].show() #debug line, dosent seem to work on different indicies sometimes...
 
-    while option != "n" and option != "y":
-        print("Would you like to save the pcap output to a pickle file?(y/n) ")
-        option = input()
-        if option == "y":
-            save_object(packets)
+    if packets is not None:
+        while option != "n" and option != "y" and packets is not None:
+            print("Would you like to save the pcap output to a pickle file?(y/n) ")
+            option = input()
+            if option == "y":
+                save_object(packets)
+        packets.summary()
 
-    packets.summary()
     return packets
 
 
