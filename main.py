@@ -4,6 +4,8 @@ import json
 import os
 import sys
 
+from scapy.layers.inet import TCP
+
 import ip as bottleIP
 
 
@@ -17,6 +19,7 @@ def build_parser():  # function that builds all the argument/parser lists
     parser.add_argument("--echo", help="prints out the string you put in")
     parser.add_argument("--packetCapture", help = "Capture x amount of packets and save them in a pickle object.", type = int)
     parser.add_argument("--printIP", help="Prints out source and destination IPs for x amount of IPs", type=int)
+    parser.add_argument("--openPCAP", help="Opens up a pcap file in the program with the ability to be saved in .obj format.")
     return parser
 
 
@@ -29,13 +32,17 @@ def main_menu(program):
 
         if args.printIP is not None:
             packets = bottleIP.ipCapture(args.printIP)
+            p = packets[0]
+            if TCP in p:
+                pdata = p[TCP].payload
+                print(pdata)
+
             ip_src_dst = bottleIP.ip_src_dst(packets)
             bottleIP.print_src_dst(ip_src_dst[0], ip_src_dst[1])
 
+
         if args.packetCapture is not None:
             bottleIP.save_packets(args.packetCapture)
-
-
 
         if args.echo is not None:
             print(args.echo)
