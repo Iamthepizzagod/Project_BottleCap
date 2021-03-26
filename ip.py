@@ -79,20 +79,20 @@ def ttlMain():
 
     packets = switcher[userchoice]()
 
-    try:
-        ttlInfo = getTTL(packets)
-        ips = ip_src_dst(packets)
-        ip_src = ips[0]
-        ip_dst = ips[1]
+    #try:
+    ttlInfo = getTTL(packets)
+    ips = ip_src_dst(packets)
+    ip_src = ips[0]
+    ip_dst = ips[1]
 
-        i = 0
-        for ttl in ttlInfo:
-            print("TTL: " + str(ttl) + ", IP source: " + str(ip_src[i]) + ", IP Destination: " + str(ip_dst[i]))
-            i += 1
+    i = 0
+    for ttl in ttlInfo:
+        print("TTL: " + str(ttl) + ", IP source: " + str(ip_src[i]) + ", IP Destination: " + str(ip_dst[i]))
+        i += 1
 
-        ttlAnalysis(ttlInfo, ip_src, ip_dst)
-    except:
-        print("Oops!", sys.exc_info()[0], "occurred.")
+    ttlAnalysis(ttlInfo, ip_src, ip_dst)
+    #except:
+        #print("Oops!", sys.exc_info()[0], "occurred.")
 
 
 def liveTTL():
@@ -135,25 +135,28 @@ def getTTL(packets):
     return ttl
 
 
-def ttlAnalysis(ttlInfo, ip_src, ip_dst):
+def ttlAnalysis(ttlInfo, ip_srcs, ip_dsts):
     # dictionary analysis looks as follows: dict(ip_dst, dict(ttl, timesFound(int)))
 
     ttlAnalysis = dict()
-    ttlFreq = dict()
-    ttl_and_ipdst = dict()
-    ip_dst_freq = helper.generic_freq(ip_dst)
+    ip_dst_freq = helper.generic_freq(ip_dsts, "IP Destination")
 
-def ip_dst_freq(ip_dst):
-    ip_dst_freq = dict()
+    for ip_dst in ip_dsts: #construct list of unique ip destinations as start of dictonary
+        if ip_dst not in ttlAnalysis:
+            ttlAnalysis[ip_dst] = ''
 
     i = 0
-    for ip in ip_dst:
-        if ip in ip_dst_freq:
-            ip_dst_freq[ip] += 1
-        else:
-            ip_dst_freq[ip] = 1
+    for key in ttlAnalysis:
+        y = 0
+        for ttl in ttlInfo:
+            if ip_dsts[y] == key:
+                if ttlAnalysis[key] == '':
+                    ttlAnalysis[key] = dict()
+                    temp = ttlAnalysis[key]
+                    temp[ttl] = 1
+                else:
+                    temp = ttlAnalysis[key]
+                    temp[ttl] += 1
+            y += 1
 
-    for key, value in ip_dst_freq.items():
-        print(f"IP destination '{key}' shows up {value} times.")
-
-    return ip_dst_freq
+    return ttlAnalysis
