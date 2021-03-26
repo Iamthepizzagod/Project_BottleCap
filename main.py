@@ -18,7 +18,8 @@ def build_parser():  # function that builds all the argument/parser lists
     parser.add_argument("--packetCapture", help="Capture x amount of live packets and save them in a pickle object.",
                         type=int)
     parser.add_argument("--printIP", help="Prints out source and destination IPs for x amount of IPs", type=int)
-    parser.add_argument("--pcapImport", help="Reads in a pcap file as a packet list.", type=str)
+    parser.add_argument("--pcapImport", help="Reads in a pcap file as a packet list, with an option to save it.", type=str)
+    parser.add_argument("--ttlComp", help = "Compares the ttls and IPs of either a live packet capture or a saved object.", action = 'store_true')
     return parser
 
 
@@ -45,10 +46,12 @@ def main_menu(program):
             print(args.pcapImport)
             packets = btIP.pcapImport(args.pcapImport)
             #btIP.outputPktSummary(packets) #debug line, not working amazing atm
-
+        elif args.ttlComp is not None:
+            btIP.ttlMain()
         while quitchar != "n" and quitchar != "y":
             print("Would you like to quit the program?(y/n) ")
             quitchar = input()
+
 
 
 if __name__ == '__main__':
