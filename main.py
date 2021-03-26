@@ -46,8 +46,10 @@ def main_menu(program):
             print(args.pcapImport)
             packets = btIP.pcapImport(args.pcapImport)
             #btIP.outputPktSummary(packets) #debug line, not working amazing atm
+
         elif args.ttlComp is not None:
             btIP.ttlMain()
+
         while quitchar != "n" and quitchar != "y":
             print("Would you like to quit the program?(y/n) ")
             quitchar = input()

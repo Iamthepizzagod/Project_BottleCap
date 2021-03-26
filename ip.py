@@ -139,7 +139,7 @@ def ttlAnalysis(ttlInfo, ip_srcs, ip_dsts):
     # dictionary analysis looks as follows: dict(ip_dst, dict(ttl, timesFound(int)))
 
     ttlAnalysis = dict()
-    ip_dst_freq = helper.generic_freq(ip_dsts, "IP Destination")
+    #ip_dst_freq = helper.generic_freq(ip_dsts, "IP Destination")
 
     for ip_dst in ip_dsts: #construct list of unique ip destinations as start of dictonary
         if ip_dst not in ttlAnalysis:
